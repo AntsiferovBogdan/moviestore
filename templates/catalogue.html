@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 80%; margin: 0 auto; padding-left: 10%; padding-right: 10%;">
+
+  <form method="GET" action="{% url 'catalogue' %}" class="mb-4">
+    {% if show_filters %}
+    <h1 class="text-center">Фильтр фильмов</h1>
+    <div class="row">
+      <div class="col-md-3">
+        <label for="rating">Рейтинг:</label>
+        <select name="rating" id="rating" class="form-control">
+          <option value="">Выберите рейтинг</option>
+          {% for i in all_ratings %}
+            <option value="{{ i }}" {% if selected_rating == i|stringformat:'s' %}selected{% endif %}>{{ i }}+</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label for="genres">Жанры:</label>
+        <select name="genres" id="genres" class="form-control">
+          <option value="">Выберите жанр</option>
+          {% for genre in all_genres %}
+            <option value="{{ genre }}" {% if genre in selected_genres %}selected{% endif %}>{{ genre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label for="decade">Год выпуска (десятилетие):</label>
+        <select name="decade" id="decade" class="form-control">
+          <option value="">Выберите десятилетие</option>
+          {% for decade in all_decades %}
+            <option value="{{ decade }}" {% if selected_decade == decade|stringformat:'s' %}selected{% endif %}>{{ decade }}-е</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-3 d-flex align-items-end justify-content-end">
+        <button type="submit" class="btn btn-primary me-2">Применить фильтры</button>
+        <a href="{% url 'catalogue' %}" class="btn btn-secondary">Сбросить фильтры</a>
+      </div>
+    </div>
+  </form>
+  {% endif %}
+  {% if page_obj %}
+    <h1 class="text-center">Список фильмов</h1>
+    <table class="table align-middle text-center">
+      <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Название</th>
+        <th scope="col">Год выпуска</th>
+        <th scope="col">Рейтинг</th>
+        <th scope="col">Жанр</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for movie in page_obj %}
+        <tr>
+          <th scope="row"><img src="{{ movie.poster.url }}" class="img-fluid" style="max-width: 100px; height: auto;"></th>
+          <td><a href="{% url 'movie_info' movie.id %}">{{ movie.title }}</a></td>
+          <td>{{ movie.release_year }}</td>
+          <td>{{ movie.rating }}</td>
+          <td>{{ movie.genre }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First">
+              <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+          </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <li class="page-item active">
+              <span class="page-link">{{ num }}</span>
+            </li>
+          {% elif num >= page_obj.number|add:-1 and num <= page_obj.number|add:1 %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+              <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+
+  {% else %}
+    <h1 class="text-center">По Вашему запросу ничего не найдено...</h1>
+  {% endif %}
+</div>
+{% endblock %}

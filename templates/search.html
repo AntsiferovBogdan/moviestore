@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh;">
+  <div class="w-50">
+      <form method="get" action="{% url 'search_movie' %}" class="text-center">
+          <div class="form-group mb-3">
+            <h1 class="text-center">{{ form.query.label_tag }}</h1><br>
+              {{ form.query }}
+          </div>
+          <div>
+              <button type="submit" class="btn btn-primary mx-auto" style="max-width: 150px;">Найти</button>
+          </div>
+      </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+      <h1 class="text-center">{{ movie.title }}, {{ movie.release_year }}</h1>
+      <h3 class="text-center">
+        {% if movie.rating %}
+          {% if movie.rating >= 7 %}
+              <span style="color: green;">{{ movie.rating }} / 10</span>
+          {% elif movie.rating >= 5 %}
+              <span style="color: gray;">{{ movie.rating }} / 10</span>
+          {% else %}
+              <span style="color: red;">{{ movie.rating }} / 10</span>
+          {% endif %}
+        {% endif %}
+      </h3>
+      <div class="card mx-auto" style="width: 24rem;">
+        <img src="{{ movie.poster.url }}" class="card-img-top" alt="...">
+        <div class="card-body text-center">
+          <p class="card-text">{{ movie.genre }}</p>
+          <p class="card-text">{{ movie.description }}</p>
+          <a href="#" class="btn btn-primary">Смотреть<br>(временно недоступно)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
