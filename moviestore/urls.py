@@ -32,6 +32,7 @@ urlpatterns = [
     path('search/results/', views.search_movie_view, name='search_movie'),
 ]
 
+# да, я знаю про проверку if debug, и что в продакте так делать нельзя :)
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 
