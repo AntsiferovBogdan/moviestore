@@ -32,13 +32,11 @@ urlpatterns = [
     path('search/results/', views.search_movie_view, name='search_movie'),
 ]
 
+urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
+
 
 def custom_page_not_found_view(request, exception):
     return render(request, '404.html', status=404)
 
 
 handler404 = 'moviestore.urls.custom_page_not_found_view'
-
-
-if DEBUG:
-    urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
